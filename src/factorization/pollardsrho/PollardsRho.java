@@ -9,6 +9,16 @@ import primes.core.Primality;
 
 public class PollardsRho implements IPrimeFactorizer {
 
+	public static void main(String[] args) throws PrimeFactoringException {
+		PollardsRho derp = new PollardsRho();
+		derp.setNumber(1024);
+		derp.setRandFunc(new MyRandFunc());
+		derp.factorize();
+		for (long i : derp.getFactors()) {
+			System.out.println(i);
+		}
+	}
+
 	private long currentNumber;
 	private ArrayList<Long> factors;
 	private IPseudoRandomFunc randFunc;
@@ -20,7 +30,7 @@ public class PollardsRho implements IPrimeFactorizer {
 		this.currentNumber = number;
 		factors = new ArrayList<>();
 	}
-	
+
 	private long findFactor() {
 		long a, b, p;
 		a = 2;
@@ -75,7 +85,7 @@ public class PollardsRho implements IPrimeFactorizer {
 		this.randFunc = func;
 	}
 
-	private class MyRandFunc implements IPseudoRandomFunc {
+	private static class MyRandFunc implements IPseudoRandomFunc {
 
 		private static final long C = 1;
 

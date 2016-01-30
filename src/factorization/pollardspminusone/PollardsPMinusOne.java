@@ -10,6 +10,16 @@ import misc.CF;
 
 public class PollardsPMinusOne implements IPrimeFactorizer {
 
+	public static void main(String[] args) throws PrimeFactoringException {
+		PollardsPMinusOne derp = new PollardsPMinusOne();
+		derp.setNumber(235408394877956343l);
+		derp.setRandFunc(new MyRandFunc());
+		derp.factorize();
+		for(long i:derp.getFactors()){
+			System.out.println(i);
+		}
+	}
+
 	private long currentNumber;
 	private ArrayList<Long> factors;
 	private IPseudoRandomFunc randFunc;
@@ -26,7 +36,7 @@ public class PollardsPMinusOne implements IPrimeFactorizer {
 		this.randFunc = func;
 	}
 
-	private class MyRandFunc implements IPseudoRandomFunc {
+	private static class MyRandFunc implements IPseudoRandomFunc {
 
 		private static final long C = 1;
 
