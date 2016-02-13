@@ -1,6 +1,7 @@
 package factorization.brute;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import factorization.core.IPrimeFactorizer;
 import factorization.core.PrimeFactoringException;
@@ -8,18 +9,19 @@ import factorization.core.PrimeFactoringException;
 public class Main {
 
 	public static void main(String[] args) {
-		if (args.length != 1) {
-			System.out
-					.println("Expected one argument containing integer to factor");
-			return;
-		}
-		long number;
-		try {
-			number = Long.parseLong(args[0]);
-		} catch (NumberFormatException e) {
-			System.out.println("Invalid input");
-			return;
-		}
+//		if (args.length != 1) {
+//			System.out
+//					.println("Expected one argument containing integer to factor");
+//			return;
+//		}
+//		long number;
+//		try {
+//			number = Long.parseLong(args[0]);
+//		} catch (NumberFormatException e) {
+//			System.out.println("Invalid input");
+//			return;
+//		}
+		long number=new Scanner(System.in).nextLong();
 		System.out.println("Factorising " + number);
 		ArrayList<Long> results;
 		IPrimeFactorizer factorizer = new PrimeFactorizerBrute();

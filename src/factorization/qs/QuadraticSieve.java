@@ -28,6 +28,15 @@ import factorization.qs.data.SquareDifference;
  */
 public class QuadraticSieve implements IPrimeFactorizer {
 
+	public static void main(String[] args) throws PrimeFactoringException {
+		QuadraticSieve derp = new QuadraticSieve();
+		derp.setNumber(1984728787878783l);
+		derp.factorize();
+		for (long factor : derp.factors) {
+			System.out.println(factor);
+		}
+	}
+
 	public IPrimeFactorizer defaultFactorizer = null;
 	public IPrimeFinder primeSource = null;
 
@@ -68,11 +77,7 @@ public class QuadraticSieve implements IPrimeFactorizer {
 		// initialize params
 		long a = (long) Math.ceil(Math.sqrt(composite));
 		long c = (long) Math.ceil(Math.sqrt(composite * 2)) + 1;
-		long b = (int) Math.pow(
-				Math.pow(
-						Math.E,
-						Math.sqrt(Math.log1p(composite)
-								* Math.log1p(Math.log1p(composite)))),
+		long b = (int) Math.pow(Math.pow(Math.E, Math.sqrt(Math.log1p(composite) * Math.log1p(Math.log1p(composite)))),
 				(3 * Math.sqrt(2)) / 4);
 		long bOffset = 10;
 		bOffset += b;
@@ -106,8 +111,7 @@ public class QuadraticSieve implements IPrimeFactorizer {
 		Long[] primeIndices;
 		Long[] baseIndices;
 		{
-			Test.dp("finding quadratic residue base indexes under "
-					+ primeSource.getNthPrime(b) + "...");
+			Test.dp("finding quadratic residue base indexes under " + primeSource.getNthPrime(b) + "...");
 			primeIndices = new Long[0];
 			baseIndices = new Long[0];
 			ArrayList<Long> primeIndicesT = new ArrayList<Long>((int) b);
@@ -133,8 +137,7 @@ public class QuadraticSieve implements IPrimeFactorizer {
 		ArrayList<SquareDifference> smoothDifs = new ArrayList<SquareDifference>();
 		long numSmooth;
 		{
-			Test.dpln("sieving for " + bOffset + " smooth numbers ("
-					+ (b * ((bOffset / 8) + (bOffset * 4) + 4))
+			Test.dpln("sieving for " + bOffset + " smooth numbers (" + (b * ((bOffset / 8) + (bOffset * 4) + 4))
 					+ " bytes needed)...");
 
 			U = MatrixOps.matrix(b, bOffset, new BigBooleanArray(1));
@@ -144,13 +147,10 @@ public class QuadraticSieve implements IPrimeFactorizer {
 			long blockOffset = 0;
 			numSmooth = 0;
 
-			// TODO implement
 			outer: for (long blockIndex = 0; blockIndex < blocks; blockIndex++) {
 				blockend = Math.min(numDifs, blockOffset + blockSize);
-				Test.dp("	sieving block " + blockOffset + " - " + blockend
-						+ "...");
-				BigBooleanArray[] factorizations = MatrixOps.matrix(b,
-						blockSize, new BigBooleanArray(1));
+				Test.dp("	sieving block " + blockOffset + " - " + blockend + "...");
+				BigBooleanArray[] factorizations = MatrixOps.matrix(b, blockSize, new BigBooleanArray(1));
 				for (long iI = 0; iI < pIS; iI++) {
 					long pI = primeIndices[(int) iI];
 					long p = primeSource.getNthPrime(pI);
@@ -163,20 +163,15 @@ public class QuadraticSieve implements IPrimeFactorizer {
 						while (v % p == 0) {
 							flag = true;
 							v = v / p;
-							factorizations[(int) pI].set(
-									sdI - blockOffset,
-									op.add(primeSeq.get(sdI - blockOffset),
-											op.one()));
+							factorizations[(int) pI].set(sdI - blockOffset,
+									op.add(primeSeq.get(sdI - blockOffset), op.one()));
 
 						}
 						tmpDifferences.set((int) sdI, v);
 						if (flag && v == 1) {
 							smoothDifs.add(squareDifs.get((int) sdI));
 							for (int row = 0; row < b; row++) {
-								U[row].set(
-										numSmooth,
-										factorizations[row].get(sdI
-												- blockOffset));
+								U[row].set(numSmooth, factorizations[row].get(sdI - blockOffset));
 							}
 							numSmooth++;
 							if (numSmooth > bOffset)
@@ -217,15 +212,14 @@ public class QuadraticSieve implements IPrimeFactorizer {
 
 			BigBooleanArray[] constants = MatrixOps.matrix(U.length, 1, U[0]);
 
-			MatrixEquation<BigBooleanArray> myEq = new MatrixEquation<BigBooleanArray>(
-					U, constants);
+			MatrixEquation<BigBooleanArray> myEq = new MatrixEquation<BigBooleanArray>(U, constants);
 			solution = MatrixEquationSolution.solve(myEq, op, comp);
 
 			Test.dpln("done");
 		}
 
 		{
-			Test.dp("searching for non-trivial solution...");
+			Test.dp("searching for non-trivial solution...\n");
 
 			BigBooleanArray[] cs;
 
@@ -238,8 +232,7 @@ public class QuadraticSieve implements IPrimeFactorizer {
 						BigInteger S = BigInteger.ONE;
 						for (int row2 = 0; row2 < cs.length; row2++) {
 							if (cs[row2].get(0)) {
-								S = S.multiply(BigInteger.valueOf(smoothDifs
-										.get(row2).value));
+								S = S.multiply(BigInteger.valueOf(smoothDifs.get(row2).value));
 								Test.dp("(" + smoothDifs.get(row2).value + ")");
 							}
 						}
@@ -250,24 +243,20 @@ public class QuadraticSieve implements IPrimeFactorizer {
 						if (SRoot.pow(2).compareTo(S) != 0) {
 							// throw new PrimeFactoringException(
 							// /
-							// "QS FATAL ERROR - square subset was not square!");
+							// "QS FATAL ERROR - square subset was not
+							// square!");
 						}
 
 						BigInteger A = BigInteger.ONE;
 						for (int row2 = 0; row2 < cs.length; row2++) {
 							if (cs[row2].get(0)) {
-								A = A.multiply(BigInteger.valueOf(smoothDifs
-										.get(row2).a));
+								A = A.multiply(BigInteger.valueOf(smoothDifs.get(row2).a));
 							}
 						}
 
-						BigInteger f1 = CF.euclidGCF(
-								BigInteger.valueOf(composite),
-								A.subtract(SRoot));
-						BigInteger f2 = CF.euclidGCF(
-								BigInteger.valueOf(composite), A.add(SRoot));
-						if (f1.compareTo(BigInteger.ONE) == 0
-								|| f1.compareTo(BigInteger.valueOf(composite)) == 0)
+						BigInteger f1 = CF.euclidGCF(BigInteger.valueOf(composite), A.subtract(SRoot));
+						BigInteger f2 = CF.euclidGCF(BigInteger.valueOf(composite), A.add(SRoot));
+						if (f1.compareTo(BigInteger.ONE) == 0 || f1.compareTo(BigInteger.valueOf(composite)) == 0)
 							continue outer;
 
 						factors.add(f1.longValue());

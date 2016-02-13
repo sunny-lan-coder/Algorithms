@@ -11,7 +11,7 @@ public class PollardsRho implements IPrimeFactorizer {
 
 	public static void main(String[] args) throws PrimeFactoringException {
 		PollardsRho derp = new PollardsRho();
-		derp.setNumber(1024);
+		derp.setNumber(666892);
 		derp.setRandFunc(new MyRandFunc());
 		derp.factorize();
 		for (long i : derp.getFactors()) {
