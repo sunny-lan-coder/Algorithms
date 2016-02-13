@@ -137,6 +137,7 @@ public class MatrixEquationSolution<T extends IArray<K>, K> {
 		if (freeMults.length > 0) {
 			freeMultsP = MatrixOps.matrix(freeMults.length, 1, freeMults[0]);
 		}
+		
 		for (int row = 0; row < freeMults.length; row++) {
 			freeMultsP[row].set(0, freeMults[row].get(0));
 		}
