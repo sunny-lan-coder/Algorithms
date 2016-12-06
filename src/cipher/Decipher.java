@@ -35,7 +35,10 @@ public class Decipher {
 		int val = -1;
 		int offset = 1;
 		while ((val = fis.read()) != -1) {
-			System.out.print(lookup.get(offset * val));
+			if (!lookup.containsKey(offset * val))
+				System.out.print("_");
+			else
+				System.out.print(lookup.get(offset * val));
 			offset++;
 			if (offset == 4)
 				offset = 1;
