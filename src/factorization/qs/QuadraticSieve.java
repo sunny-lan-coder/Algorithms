@@ -30,7 +30,7 @@ public class QuadraticSieve implements IPrimeFactorizer {
 
 	public static void main(String[] args) throws PrimeFactoringException {
 		QuadraticSieve derp = new QuadraticSieve();
-		derp.setNumber(1984728787878783l);
+		derp.setNumber(1984728787658l);
 		derp.factorize();
 		for (long factor : derp.factors) {
 			System.out.println(factor);
